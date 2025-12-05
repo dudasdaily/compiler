@@ -1,13 +1,13 @@
 all: expParser
 
-exp.tab.c exp.tab.h:	exp.y
-	bison -d exp.y
+toypl.tab.c toypl.tab.h:	toypl.y
+	bison -d toypl.y
 
-lex.yy.c:	exp.l exp.tab.h
-	flex exp.l
+lex.yy.c:	toypl.l toypl.tab.h
+	flex toypl.l
 
-expParser: lex.yy.c exp.tab.c exp.tab.h
-	gcc -o expParser lex.yy.c exp.tab.c node.c -ll
+expParser: lex.yy.c toypl.tab.c toypl.tab.h
+	gcc -o expParser lex.yy.c toypl.tab.c node.c -lfl
 
 clean:
-	rm expParser exp.tab.c lex.yy.c exp.tab.h
+	rm expParser toypl.tab.c lex.yy.c toypl.tab.h
