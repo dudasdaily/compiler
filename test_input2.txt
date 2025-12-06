@@ -1,0 +1,5 @@
+program example ;
+main
+begin
+    return (1)
+end .

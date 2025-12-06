@@ -1,14 +1,13 @@
-program example;
-    func fact (n:int) returns (long)
-        begin
-            if (n <= 1) then return 1
-            else return(n*fact(n-1))
-        end
-    /* comment line */
-    var i:int;
+program example ;
+    func fact (n : int) returns (long)
+    var i : int ;
     begin
-        for (i=1 to 10)
-            begin
-                call print(fact(i));
-            end
+        if (n <= 1) then return (1)
+        else return (n * fact(n-1))
+    end
+    /* comment line */
+    
+    main
+    begin
+        return (1)
     end .

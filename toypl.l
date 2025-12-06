@@ -3,7 +3,7 @@
 %}
 %x          CMT
 word        [a-zA-Z]+[a-zA-Z0-9]*
-number      -?([1-9]+[0-9]*)|0
+number      ([1-9]+[0-9]*)|0
 
 %%
 "/*"        BEGIN CMT;
