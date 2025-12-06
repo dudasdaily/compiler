@@ -149,15 +149,23 @@ Fact        : Var               { $$ = $1; }
             | '(' Expr ')'      { $$ = $2; }
             ;
 
-FuncCall    : FuncName '(' ParamList ')' { $$ = NULL; }
+FuncCall    : FuncName '(' ParamList ')' {
+                $$ = makeNode("FUNC_CALL", NULL, $1);
+                $1->bro = $3;
+            }
             ;
 
-ParamList   : ExprList          { $$ = NULL; }
+ParamList   : ExprList          { $$ = $1; }
             |                   { $$ = NULL; }
             ;
 
-ExprList    : ExprList ',' Expr { $$ = NULL; }
-            | Expr              { $$ = NULL; }
+ExprList    : ExprList ',' Expr {
+                Node * ptr = $1;
+                while (ptr->bro != NULL) ptr = ptr->bro;
+                ptr->bro = $3;
+                $$ = $1;
+            }
+            | Expr              { $$ = $1; }
             ;
 
 Program     : TPROGRAM Name ';' SubPgmList TMAIN VarDecl CompStmt '.' { 
@@ -219,8 +227,14 @@ Var         : Name { $$ = $1; }
             ;
 
 SubPgmList  : SubPgmList SubPgm {
-                $$ = makeNode("SUBPGLIST", $1, NULL);
-                $1->bro = $2;
+                if ($1 == NULL) {
+                    $$ = $2;
+                } else {
+                    Node * ptr = $1;
+                    while (ptr->bro != NULL) ptr = ptr->bro;
+                    ptr->bro = $2;
+                    $$ = $1;
+                }
             }
             | { $$ = NULL; }
             ;
