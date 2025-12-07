@@ -294,11 +294,18 @@ int yyerror() {
 }
 
 void traverse(Node * nodeP) {
-	while (nodeP!=NULL) {
+	/* while (nodeP!=NULL) {
 		printf("%s\n", nodeP->kind);
 		traverse(nodeP->son);
 		nodeP=nodeP->bro;
-	}
+	} */
+    if (nodeP->son)
+        traverse(nodeP->son);
+
+    printf("%s\n", nodeP->kind);
+
+    if (nodeP->bro)
+        traverse(nodeP->bro);
 }
 
 int main() {

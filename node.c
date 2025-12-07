@@ -3,10 +3,11 @@
 #include <string.h>
 #include "node.h"
 
-Node* makeNode(char * kind, Node* bro, Node* son) {
-	Node * temp;
+Node *makeNode(char *kind, Node *bro, Node *son)
+{
+	Node *temp;
 
-	temp = (Node*)malloc(sizeof(Node));
+	temp = (Node *)malloc(sizeof(Node));
 	strcpy(temp->kind, kind);
 	temp->bro = bro;
 	temp->son = son;

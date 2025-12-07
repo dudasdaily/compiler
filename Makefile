@@ -1,9 +1,9 @@
 all: toyplParser
 
-toypl.tab.c toypl.tab.h:	toypl.y
+toypl.tab.c toypl.tab.h: toypl.y
 	bison -d toypl.y
 
-lex.yy.c:	toypl.l toypl.tab.h
+lex.yy.c: toypl.l toypl.tab.h
 	flex toypl.l
 
 toyplParser: lex.yy.c toypl.tab.c toypl.tab.h

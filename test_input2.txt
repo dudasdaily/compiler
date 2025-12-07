@@ -1,5 +1,6 @@
 program example ;
 main
+var i : int;
 begin
     return (1)
 end .
