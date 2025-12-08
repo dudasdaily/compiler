@@ -2,5 +2,5 @@ program example ;
 main
 var i : int;
 begin
-    return (1)
+    a = 1
 end .

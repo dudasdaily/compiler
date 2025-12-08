@@ -122,7 +122,7 @@ Rel         : Expr TLT Expr { $$ = makeNode("LT", NULL, $1);
 
 Expr        : Expr TPLUS Term   {
                 $$ = makeNode("PLUS", NULL, $1);
-                $1->bro = $3;    
+                $1->bro = $3;
             }
             | Expr TMINUS Term  {
                 $$ = makeNode("MINUS", NULL, $1);
