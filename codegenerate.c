@@ -20,7 +20,7 @@ void code(Node* ptr)
 {
     if (ptr == NULL)
         return;
-    // ptr: 현재 노드
+
     Node* son = ptr->son;
     Node* bro = ptr->bro;
     
@@ -63,12 +63,11 @@ void code_L(Node* ptr)
         return;
     
     /* 출력 메시지 포멧팅 시작 */
-    char* from = "ldc ()";
     int length = strlen(ptr->value.sv) + 6 + 1; // 6: ldc (), 1: NULL문자
     char* msg = (char*)malloc(sizeof(char) * length);
     if (msg == NULL)
         return;
-    sprintf(msg, "ldc (%s)", from);
+    sprintf(msg, "ldc (%s)", ptr->value.sv);
     /* 출력 메시지 포멧팅 끝 */
 
     // ldc (value) 출력!
@@ -82,5 +81,17 @@ void code_R(Node* ptr)
     if (ptr == NULL)
         return;
 
+    Node* son = ptr->son;
+    Node* bro = ptr->bro;
     
+    if (strcmp(ptr->kind, "NAME") == 0)
+    {
+        code_L(ptr);
+        print_msg("ind", false);
+    }
+
+    else if (strcmp(ptr->kind, "NUMBER"))
+    {
+
+    }
 }
