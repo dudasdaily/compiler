@@ -2,7 +2,7 @@
 #include "toypl.tab.h"
 %}
 %x          CMT
-word        [a-zA-Z]+[a-zA-Z0-9]*
+word        [a-zA-Z_][a-zA-Z0-9_]*
 number      ([1-9]+[0-9]*)|0
 
 %%
