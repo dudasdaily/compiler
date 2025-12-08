@@ -83,8 +83,8 @@ RtrnStmt    : TRETURN '(' Expr ')' { $$ = makeNode("RETURN", NULL, $3); }
 CompStmt    : TBEGIN StmtList TEND { $$ = makeNode("COMP", NULL, $2); }
             ;
 
-StmtList    : StmtList ';' Stmt {
-                $$ = makeNode("COMP", $1, NULL); 
+StmtList    : Stmt ';' StmtList {
+                $$ = $1;
                 $1->bro = $3;
             }
             | Stmt { $$ = $1; }
@@ -294,18 +294,29 @@ int yyerror() {
 }
 
 void traverse(Node * nodeP) {
-	/* while (nodeP!=NULL) {
-		printf("%s\n", nodeP->kind);
-		traverse(nodeP->son);
-		nodeP=nodeP->bro;
-	} */
-    if (nodeP->son)
-        traverse(nodeP->son);
+	// while (nodeP!=NULL) {
+	// 	printf("%s\n", nodeP->kind);
+	// 	traverse(nodeP->son);
+	// 	nodeP=nodeP->bro;
+	// }
+
+    // if (nodeP->son)
+    //     traverse(nodeP->son);
+        
+    // if (nodeP->bro)
+    //     traverse(nodeP->bro);
+
+    // printf("%s\n", nodeP->kind);
+
+    if (nodeP == NULL)
+        return;
+
+    Node* son = nodeP->son;
+    Node* bro = nodeP->bro;
 
     printf("%s\n", nodeP->kind);
-
-    if (nodeP->bro)
-        traverse(nodeP->bro);
+    traverse(son);
+    traverse(bro);
 }
 
 int main() {

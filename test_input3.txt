@@ -1,0 +1,14 @@
+program comprehensive_test;
+main
+
+begin
+  while (j > 0)
+    j = j - 1;
+
+  for (i = 1 to 5)
+    k = k + i;
+
+  k = add(k, 100);
+
+  call print_number(k)
+end.
