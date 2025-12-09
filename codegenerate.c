@@ -1,4 +1,4 @@
-#include "node.h"
+#include "codegenerate.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,7 +9,7 @@ char *white_space = "        ";
 void print_msg(const char *msg, char *label)
 {
     if (label == NULL)
-        printf(white_space);
+        printf("%s", white_space);
     else
         return; // 아직 label 구현 안함!
 
@@ -42,10 +42,15 @@ void code(Node *ptr)
     }
     else if (strcmp(ptr->kind, "COMP") == 0)
     {
-        code(son);
+        if (son == NULL)
+            return;
 
-        if (son->bro)
-            code(son->bro);
+        code(son);
+        while (son->bro != NULL)
+        {
+            son = bro;
+            code(son);
+        }
     }
     else if (strcmp(ptr->kind, "RETURN") == 0)
     {
@@ -88,8 +93,7 @@ void code_L(Node *ptr)
     sprintf(msg, "ldc (%s)", ptr->value.sv);
     /* 출력 메시지 포멧팅 끝 */
 
-    // ldc (value) 출력!
-    print_msg(msg, NULL);
+    print_msg(msg, NULL); // ldc (value) 출력!
     free(msg);
 }
 
@@ -108,7 +112,111 @@ void code_R(Node *ptr)
         print_msg("ind", NULL);
     }
 
-    else if (strcmp(ptr->kind, "NUMBER"))
+    else if (strcmp(ptr->kind, "NUMBER") == 0)
     {
+        char *msg = malloc(sizeof(char) * 100);
+        double value = ptr->value.dv;
+        sprintf(msg, "ldc (%g)", value);
+        print_msg(msg, NULL);
+    }
+
+    // 식 산술연산 식
+    else if (strcmp(ptr->kind, "PLUS") == 0)
+    {
+        code_R(son);
+        code_R(bro);
+
+        char *msg = "add";
+        print_msg(msg, NULL);
+    }
+
+    else if (strcmp(ptr->kind, "MINUS") == 0)
+    {
+        code_R(son);
+        code_R(bro);
+
+        char *msg = "minus";
+        print_msg(msg, NULL);
+    }
+
+    else if (strcmp(ptr->kind, "MUL") == 0)
+    {
+        code_R(son);
+        code_R(bro);
+
+        char *msg = "mul";
+        print_msg(msg, NULL);
+    }
+
+    else if (strcmp(ptr->kind, "DIV") == 0)
+    {
+        code_R(son);
+        code_R(bro);
+
+        char *msg = "div";
+        print_msg(msg, NULL);
+    }
+
+    // 식 비교연산 식
+    else if (strcmp(ptr->kind, "EQ") == 0)
+    {
+        code_R(son);
+        code_R(bro);
+
+        char *msg = "equ";
+        print_msg(msg, NULL);
+    }
+
+    else if (strcmp(ptr->kind, "LT") == 0)
+    {
+        code_R(son);
+        code_R(bro);
+
+        char *msg = "lt";
+        print_msg(msg, NULL);
+    }
+
+    else if (strcmp(ptr->kind, "LE") == 0)
+    {
+        code_R(son);
+        code_R(bro);
+
+        char *msg = "leq";
+        print_msg(msg, NULL);
+    }
+
+    else if (strcmp(ptr->kind, "GT") == 0)
+    {
+        code_R(son);
+        code_R(bro);
+
+        char *msg = "gt";
+        print_msg(msg, NULL);
+    }
+
+    else if (strcmp(ptr->kind, "GE") == 0)
+    {
+        code_R(son);
+        code_R(bro);
+
+        char *msg = "geq";
+        print_msg(msg, NULL);
+    }
+
+    else if (strcmp(ptr->kind, "NE") == 0)
+    {
+        code_R(son);
+        code_R(bro);
+
+        char *msg = "neq";
+        print_msg(msg, NULL);
+    }
+
+    // !식
+    else if (strcmp(ptr->kind, "NEG") == 0)
+    {
+        code_R(son);
+        char *msg = "neg";
+        print_msg(msg, NULL);
     }
 }
