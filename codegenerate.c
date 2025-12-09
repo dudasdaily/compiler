@@ -48,7 +48,7 @@ void code(Node *ptr)
         code(son);
         while (son->bro != NULL)
         {
-            son = bro;
+            son = son->bro;
             code(son);
         }
     }

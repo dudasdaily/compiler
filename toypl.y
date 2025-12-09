@@ -323,8 +323,9 @@ void traverse(Node * nodeP) {
 int main() {
     yyparse();
     traverse(rootNode);
+    printf("-------------------------\n");
 
-    // code(rootNode);
+    code(rootNode);
 
     return 0;
 }
