@@ -39,6 +39,7 @@ void code(Node *ptr)
 
         code_L(son);
         code_R(son->bro);
+        print_msg("sto", NULL);
     }
     else if (strcmp(ptr->kind, "COMP") == 0)
     {
@@ -124,16 +125,15 @@ void code_R(Node *ptr)
     else if (strcmp(ptr->kind, "PLUS") == 0)
     {
         code_R(son);
-        code_R(bro);
+        code_R(son->bro);
 
         char *msg = "add";
         print_msg(msg, NULL);
     }
-
     else if (strcmp(ptr->kind, "MINUS") == 0)
     {
         code_R(son);
-        code_R(bro);
+        code_R(son->bro);
 
         char *msg = "minus";
         print_msg(msg, NULL);
@@ -142,7 +142,7 @@ void code_R(Node *ptr)
     else if (strcmp(ptr->kind, "MUL") == 0)
     {
         code_R(son);
-        code_R(bro);
+        code_R(son->bro);
 
         char *msg = "mul";
         print_msg(msg, NULL);
@@ -151,7 +151,7 @@ void code_R(Node *ptr)
     else if (strcmp(ptr->kind, "DIV") == 0)
     {
         code_R(son);
-        code_R(bro);
+        code_R(son->bro);
 
         char *msg = "div";
         print_msg(msg, NULL);
@@ -161,7 +161,7 @@ void code_R(Node *ptr)
     else if (strcmp(ptr->kind, "EQ") == 0)
     {
         code_R(son);
-        code_R(bro);
+        code_R(son->bro);
 
         char *msg = "equ";
         print_msg(msg, NULL);
@@ -170,7 +170,7 @@ void code_R(Node *ptr)
     else if (strcmp(ptr->kind, "LT") == 0)
     {
         code_R(son);
-        code_R(bro);
+        code_R(son->bro);
 
         char *msg = "lt";
         print_msg(msg, NULL);
@@ -179,7 +179,7 @@ void code_R(Node *ptr)
     else if (strcmp(ptr->kind, "LE") == 0)
     {
         code_R(son);
-        code_R(bro);
+        code_R(son->bro);
 
         char *msg = "leq";
         print_msg(msg, NULL);
@@ -188,7 +188,7 @@ void code_R(Node *ptr)
     else if (strcmp(ptr->kind, "GT") == 0)
     {
         code_R(son);
-        code_R(bro);
+        code_R(son->bro);
 
         char *msg = "gt";
         print_msg(msg, NULL);
@@ -197,7 +197,7 @@ void code_R(Node *ptr)
     else if (strcmp(ptr->kind, "GE") == 0)
     {
         code_R(son);
-        code_R(bro);
+        code_R(son->bro);
 
         char *msg = "geq";
         print_msg(msg, NULL);
@@ -206,7 +206,7 @@ void code_R(Node *ptr)
     else if (strcmp(ptr->kind, "NE") == 0)
     {
         code_R(son);
-        code_R(bro);
+        code_R(son->bro);
 
         char *msg = "neq";
         print_msg(msg, NULL);
