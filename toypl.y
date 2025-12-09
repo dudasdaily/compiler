@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
 #include <string.h>
+#include "codegenerate.h"
 #include "node.h"
 #include "toypl.tab.h"
 Node * rootNode;
@@ -322,6 +323,8 @@ void traverse(Node * nodeP) {
 int main() {
     yyparse();
     traverse(rootNode);
+
+    // code(rootNode);
 
     return 0;
 }
