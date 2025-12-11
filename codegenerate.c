@@ -5,15 +5,14 @@
 #include <string.h>
 
 char *white_space = "        ";
+int label_count = 0;
 
 void print_msg(const char *msg, char *label)
 {
     if (label == NULL)
-        printf("%s", white_space);
+        printf("%s %s;\n", white_space, msg);
     else
-        return; // 아직 label 구현 안함!
-
-    printf("%s;\n", msg);
+        printf("%s %s\n", msg, label);
 }
 
 // Statement를 처리하는 함수
@@ -64,6 +63,18 @@ void code(Node *ptr)
     }
     else if (strcmp(ptr->kind, "IF") == 0)
     {
+        if (son == NULL)
+            return;
+        
+        if (son->bro->bro)
+        {
+
+        }
+
+        else
+        {
+
+        }
     }
     else if (strcmp(ptr->kind, "PCALL") == 0)
     {
