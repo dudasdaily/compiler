@@ -84,6 +84,34 @@ void code(Node *ptr)
     }
     else if (strcmp(ptr->kind, "WHILE") == 0)
     {
+        if (son == NULL) return;       
+        if (son->bro == NULL) return;  
+
+        // 라벨 2개 생성
+        char Lbegin[32];
+        char Lend[32];
+        snprintf(Lbegin, sizeof(Lbegin), "L%d", label_count++);
+        snprintf(Lend,   sizeof(Lend),   "L%d", label_count++);
+
+        // loop 시작 라벨
+        print_msg("lab", Lbegin);
+
+        // condition 평가 (결과가 스택에 올라온다고 가정)
+        code_R(son);
+
+        // cond가 false면 루프 종료 라벨로 점프
+        char msg[64];
+        snprintf(msg, sizeof(msg), "fjp %s", Lend);
+        print_msg(msg, NULL);
+
+        code(son->bro);
+
+        // 다시 조건 검사로 점프
+        snprintf(msg, sizeof(msg), "ujp %s", Lbegin);
+        print_msg(msg, NULL);
+
+        // loop 종료 라벨
+        print_msg("lab", Lend);
     }
 }
 
