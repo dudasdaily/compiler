@@ -277,6 +277,25 @@ void code_R(Node *ptr)
         sprintf(msg, "ldc (%g)", value);
         print_msg(msg, NULL);
     }
+    else if (strcmp(ptr->kind, "FUNC_CALL") == 0)
+    {
+        print_msg("mst", NULL);
+
+        char *funcName = son->value.sv;
+        int arg_count = 0;
+        Node *arg = son->bro;
+
+        while (arg != NULL)
+        {
+            code_R(arg);
+            arg = arg->bro;
+            arg_count++;
+        }
+
+        char msg[100];
+        snprintf(msg, sizeof(msg), "cup %d l_%s", arg_count, funcName);
+        print_msg(msg, NULL);
+    }
 
     // 식 산술연산 식
     else if (strcmp(ptr->kind, "PLUS") == 0)
