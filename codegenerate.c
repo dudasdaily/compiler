@@ -29,7 +29,11 @@ void code(Node *ptr)
         if (strcmp(son->kind, "VARDECL") == 0)
             son = son->bro; // VARDECL은 코드를 생성하지 않으므로 pass!
 
-        code(son); // 다음 문장을 넘김
+        while (son != NULL)
+        {
+            code(son);
+            son = son->bro;
+        }
     }
     else if (strcmp(ptr->kind, "ASSIGN") == 0)
     {
@@ -122,8 +126,27 @@ void code(Node *ptr)
         {
         }
     }
-    else if (strcmp(ptr->kind, "PCALL") == 0)
+    else if (strcmp(ptr->kind, "CALL") == 0)
     {
+        if (son == NULL)
+            return;
+
+        print_msg("mst", NULL);
+
+        char *procName = son->value.sv;
+        int arg_count = 0;
+        Node *arg = son->bro;
+
+        while (arg != NULL)
+        {
+            code_R(arg);
+            arg = arg->bro;
+            arg_count++;
+        }
+
+        char msg[100];
+        snprintf(msg, sizeof(msg), "cup %d l_%s", arg_count, procName);
+        print_msg(msg, NULL);
     }
     else if (strcmp(ptr->kind, "FOR") == 0)
     {
