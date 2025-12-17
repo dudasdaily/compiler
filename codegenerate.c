@@ -258,6 +258,47 @@ void code(Node *ptr)
     }
     else if (strcmp(ptr->kind, "FOR") == 0)
     {
+        if (son == NULL)
+            return;
+        
+        int l1 = label_count++;
+        int l2 = label_count++;
+
+        Node *var = son;
+        Node *e1 = var->bro;
+        Node *e2 = e1->bro;       
+        Node *stmt = e2->bro;
+
+        char label1[20], label2[20];
+        printf(label1, "L%d", l1);
+        printf(label2, "L%d", l2);
+
+        // code(x = e1): 초기화
+        code_L(var);
+        code_R(e1);
+        print_msg("sto", NULL);
+
+        printf("%s:\n", label1);
+
+        // codeR(x <= e2): 조건 검사
+        code_R(var);
+        code_R(e2);
+        print_msg("leq", NULL);
+
+        print_msg("fjp", label2);
+
+        code(stmt);
+
+        code_L(var);
+        code_R(var);
+        print_msg("ldc (1)", NULL);
+        print_msg("add", NULL);
+        print_msg("sto", NULL);
+
+        print_msg("ujp", label1);
+
+        printf("%s:\n", label2);
+
     }
     else if (strcmp(ptr->kind, "WHILE") == 0)
     {
