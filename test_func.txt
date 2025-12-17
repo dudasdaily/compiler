@@ -1,0 +1,10 @@
+program funcTest;
+    func f(a : int) returns (int)
+    begin
+        return (a)
+    end
+    
+    main
+    begin
+        a = f(1)
+    end.
