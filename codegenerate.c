@@ -52,6 +52,54 @@ void code(Node *ptr)
             code(son);
         }
     }
+    else if (strcmp(ptr->kind, "PROC") == 0)
+    {
+        if (son == NULL)
+            return;
+
+        char *procName = son->value.sv;
+        int param_count = 0;
+        int local_var_count = 0;
+        Node *body = NULL;
+
+        // son is Name. son->bro is first param (if any) or VarDecl or Comp
+        Node *curr = son->bro;
+        while (curr != NULL)
+        {
+            if (strcmp(curr->kind, "DECL") == 0)
+            {
+                param_count += curr->value.dv;
+            }
+            else if (strcmp(curr->kind, "VARDECL") == 0)
+            {
+                local_var_count += curr->value.dv;
+            }
+            else if (strcmp(curr->kind, "COMP") == 0)
+            {
+                body = curr;
+                break;
+            }
+            curr = curr->bro;
+        }
+
+        char label[100];
+        snprintf(label, sizeof(label), "l_%s:", procName);
+        int label_len = strlen(label);
+        int ws_len = strlen(white_space);
+        int spaces = ws_len - label_len;
+        if (spaces < 0)
+            spaces = 0;
+
+        printf("%s", label);
+        for (int i = 0; i < spaces; i++)
+            printf(" ");
+        printf("ssp %d;\n", param_count + local_var_count + 2);
+
+        if (body != NULL)
+            code(body);
+
+        print_msg("retp", NULL);
+    }
     else if (strcmp(ptr->kind, "RETURN") == 0)
     {
         if (son == NULL)

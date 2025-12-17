@@ -1,0 +1,11 @@
+program procTest;
+    proc p(a, b : int)
+    var x, y : int;
+    begin
+        x = a + b
+    end
+    
+    main
+    begin
+        call p(1, 2)
+    end.
