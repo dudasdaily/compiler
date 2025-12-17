@@ -1,14 +1,21 @@
-program comprehensive_test;
-main
+program example ;
+  func fact (n: int) returns (long)
+  begin
+    if (n<=1) then return (1)
+    else return(n*fact(n-1))
+  end
 
-begin
-  while (j > 0)
-    j = j - 1;
-
-  for (i = 1 to 5)
-    k = k + i;
-
-  k = add(k, 100);
-
-  call print_number(k)
-end.
+  func exp (n: int) returns (long)
+    var i: int; m: long;
+    begin
+      m=1;
+      for (i=1 to n)
+        m=2*m;
+      return (m)
+    end
+  
+  main
+  var i:int;
+  begin
+    a=1
+  end.

@@ -352,16 +352,23 @@ int yyerror() {
     printf("syntax error\n");
 }
 
+int indentation = 0;
 void traverse(Node * nodeP) {
     if (nodeP == NULL)
         return;
 
     Node* son = nodeP->son;
     Node* bro = nodeP->bro;
+    
+    for (int i = 0; i < indentation; i++)
+        printf(" ");
 
     printf("%s\n", nodeP->kind);
     traverse(son);
+    indentation += 4;
+
     traverse(bro);
+    indentation -= 4;
 }
 
 int main() {
