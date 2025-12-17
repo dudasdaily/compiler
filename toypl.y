@@ -198,24 +198,55 @@ Program     : TPROGRAM Name ';' SubPgmList TMAIN VarDecl CompStmt '.' {
             }
             ;
 
-VarDecl     : TVAR DclList ';' { $$ = makeNode("VARDECL", NULL, $2); }
+VarDecl     : TVAR DclList ';' {
+                $$ = makeNode("VARDECL", NULL, $2);
+                $$->value.dv = 0;
+
+                Node* ptr = $2;
+
+                while (ptr != NULL)
+                {
+                    $$->value.dv += ptr->value.dv;
+                    ptr = ptr->bro;
+                }
+            }
             | { $$ = NULL; }
             ;
 
-DclList     : DclList ';' Decl { $$ = makeNode("DCLLIST", $1, NULL);
-                $1->bro = $3;
+DclList     : DclList ';' Decl {
+                $$ = $1;
+                Node * ptr = $$;
+                while (ptr->bro != NULL) ptr = ptr->bro;
+                ptr->bro = $3;
             }
             | Decl { $$ = $1; }
             ;
 
-Decl        : VarList ':' Type { $$ = makeNode("DECL", NULL, $1);
-                $1->bro = $3;
+Decl        : VarList ':' Type {
+                $$ = makeNode("DECL", NULL, $1);
+                $$->value.dv = 0;
+
+                Node * ptr = $1;
+                while (ptr != NULL)
+                {
+                    $$->value.dv += 1;
+                    ptr = ptr->bro;
+                }
+
+                ptr = $1;
+
+                while (ptr->bro != NULL)
+                    ptr = ptr->bro;
+
+                ptr->bro = $3;
             }
             ;
 
 VarList     : VarList ',' Var {
-                $$ = makeNode("VARLIST", $1, NULL);
-                $1->bro = $3;
+                Node * ptr = $1;
+                while (ptr->bro != NULL)
+                    ptr = ptr->bro;
+                ptr->bro = $3;
             }
             | Var { $$ = $1; }
             ;
@@ -246,18 +277,45 @@ SubPgm      : ProcDecl { $$ = $1; }
 
 ProcDecl    : TPROC ProcName '(' FormParam ')' VarDecl CompStmt {
                 $$ = makeNode("PROC", NULL, $2);
-                $2->bro = $4;
-                $4->bro = $6;
-                $6->bro = $7;
+                Node* ptr = $2;
+
+                if ($4 != NULL)
+                {
+                    ptr->bro = $4;
+                    ptr = $4;
+                }
+
+                if ($6 != NULL)
+                {
+                    ptr->bro = $6;
+                    ptr = $6;
+                }
+
+                if ($7 != NULL)
+                    ptr->bro = $7;
             }
             ;
 
 FuncDecl    : TFUNC FuncName '(' FormParam ')' TRETURNS '(' Type ')' VarDecl CompStmt {
                 $$ = makeNode("FUNC", NULL, $2);
-                $2->bro = $8;
-                $8->bro = $4;
-                $4->bro = $10;
-                $10->bro = $11;
+                Node* ptr = $2;
+                ptr->bro = $8; // Name -> Type -> VarDecl(매개변수)$4 -> VarDecl(지역변수)$10 -> CompStmt$11
+                ptr = $8;
+
+                if ($4 != NULL)
+                {
+                    ptr->bro = $4;
+                    ptr = $4;
+                }
+
+                if ($10 != NULL)
+                {
+                    ptr->bro = $10;
+                    ptr = $10;
+                }
+
+                if ($11 != NULL)
+                    ptr->bro = $11;
             }
             ;
 
@@ -295,20 +353,6 @@ int yyerror() {
 }
 
 void traverse(Node * nodeP) {
-	// while (nodeP!=NULL) {
-	// 	printf("%s\n", nodeP->kind);
-	// 	traverse(nodeP->son);
-	// 	nodeP=nodeP->bro;
-	// }
-
-    // if (nodeP->son)
-    //     traverse(nodeP->son);
-        
-    // if (nodeP->bro)
-    //     traverse(nodeP->bro);
-
-    // printf("%s\n", nodeP->kind);
-
     if (nodeP == NULL)
         return;
 

@@ -65,15 +65,13 @@ void code(Node *ptr)
     {
         if (son == NULL)
             return;
-        
+
         if (son->bro->bro)
         {
-
         }
 
         else
         {
-
         }
     }
     else if (strcmp(ptr->kind, "PCALL") == 0)
@@ -84,14 +82,16 @@ void code(Node *ptr)
     }
     else if (strcmp(ptr->kind, "WHILE") == 0)
     {
-        if (son == NULL) return;       
-        if (son->bro == NULL) return;  
+        if (son == NULL)
+            return;
+        if (son->bro == NULL)
+            return;
 
         // 라벨 2개 생성
         char Lbegin[32];
         char Lend[32];
         snprintf(Lbegin, sizeof(Lbegin), "L%d", label_count++);
-        snprintf(Lend,   sizeof(Lend),   "L%d", label_count++);
+        snprintf(Lend, sizeof(Lend), "L%d", label_count++);
 
         // loop 시작 라벨
         print_msg("lab", Lbegin);

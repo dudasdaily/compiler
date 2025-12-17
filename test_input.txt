@@ -1,6 +1,6 @@
 program example ;
     func fact (n : int) returns (long)
-    var i : int ;
+    var a, b, c : int;
     begin
         if (n <= 1) then return (1)
         else return (n * fact(n-1))
