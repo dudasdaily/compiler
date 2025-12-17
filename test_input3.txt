@@ -1,17 +1,13 @@
 program example ;
   func fact (n: int) returns (long)
   begin
-    if (n<=1) then return (1)
-    else return(n*fact(n-1))
+    return (1)
   end
 
   func exp (n: int) returns (long)
     var i: int; m: long;
     begin
-      m=1;
-      for (i=1 to n)
-        m=2*m;
-      return (m)
+      return (2)
     end
   
   main

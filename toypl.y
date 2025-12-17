@@ -177,6 +177,8 @@ Program     : TPROGRAM Name ';' SubPgmList TMAIN VarDecl CompStmt '.' {
                 if ($4 != NULL) {
                     rootNode->son = $4; // 첫 번째 자식으로 등록
                     ptr = $4;
+                    while (ptr->bro != NULL)
+                        ptr = ptr->bro;
                 }
 
                 // 2. VarDecl 처리
@@ -373,7 +375,7 @@ void traverse(Node * nodeP) {
 
 int main() {
     yyparse();
-    traverse(rootNode);
+    // traverse(rootNode);
     code(rootNode);
 
     return 0;

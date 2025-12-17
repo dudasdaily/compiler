@@ -26,11 +26,29 @@ void code(Node *ptr)
 
     if (strcmp(ptr->kind, "PROGRAM") == 0)
     {
-        if (strcmp(son->kind, "VARDECL") == 0)
-            son = son->bro; // VARDECL은 코드를 생성하지 않으므로 pass!
-
         while (son != NULL)
         {
+            if (strcmp(son->kind, "VARDECL") == 0 ||
+                strcmp(son->kind, "COMP") == 0)
+            {
+                int local_var_count = 0;
+                Node *body = son;
+
+                if (strcmp(son->kind, "VARDECL") == 0)
+                {
+                    local_var_count = son->value.dv;
+                    body = son->bro;
+                }
+
+                char msg[50];
+                snprintf(msg, sizeof(msg), "ssp %d", local_var_count + 2);
+                print_msg(msg, NULL);
+
+                code(body);
+                print_msg("stp", NULL);
+                break;
+            }
+
             code(son);
             son = son->bro;
         }
@@ -157,7 +175,7 @@ void code(Node *ptr)
             return;
 
         code_R(son);
-        print_msg("str", NULL);
+        print_msg("str 0", NULL);
         print_msg("retf", NULL);
     }
     else if (strcmp(ptr->kind, "IF") == 0)
