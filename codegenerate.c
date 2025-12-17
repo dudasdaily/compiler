@@ -7,12 +7,13 @@
 char *white_space = "        ";
 int label_count = 0;
 
+
 void print_msg(const char *msg, char *label)
 {
     if (label == NULL)
         printf("%s %s;\n", white_space, msg);
     else
-        printf("%s %s\n", msg, label);
+        printf("%s %s;\n", msg, label);
 }
 
 // Statement를 처리하는 함수
@@ -178,18 +179,36 @@ void code(Node *ptr)
         print_msg("str 0", NULL);
         print_msg("retf", NULL);
     }
+
     else if (strcmp(ptr->kind, "IF") == 0)
     {
         if (son == NULL)
             return;
 
-        if (son->bro->bro)
+        else if(son->bro != NULL && son->bro->bro == NULL)
         {
+            code_R(son);
+            char label[20];
+            sprintf(label, "l%d", label_count++);
+            print_msg("fjp", label);
+            code(son->bro);
+            printf("%s:",label);
         }
 
-        else
+        else if(son->bro != NULL && son->bro->bro != NULL)
         {
+            code_R(son);
+            char label1[20], label2[20]; 
+            sprintf(label1, "l%d", label_count++);
+            sprintf(label2, "l%d", label_count++);
+            print_msg("fjp", label1);
+            code(son->bro);
+            print_msg("ujp", label2);
+            printf("%s:", label1);
+            code(son->bro->bro);
+            printf("%s:", label2);
         }
+  
     }
     else if (strcmp(ptr->kind, "CALL") == 0)
     {
@@ -258,7 +277,7 @@ void code_L(Node *ptr)
         return;
 
     // NAME이 아니면 pass
-    if (strcmp(ptr->kind, "NAME") == 1)
+    if (strcmp(ptr->kind, "NAME") != 0)
         return;
 
     /* 출력 메시지 포멧팅 시작 */
