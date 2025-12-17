@@ -308,6 +308,8 @@ FuncDecl    : TFUNC FuncName '(' FormParam ')' TRETURNS '(' Type ')' VarDecl Com
                 {
                     ptr->bro = $4;
                     ptr = $4;
+                    while (ptr->bro != NULL)
+                        ptr = ptr->bro;
                 }
 
                 if ($10 != NULL)

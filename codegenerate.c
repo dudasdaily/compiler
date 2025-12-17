@@ -8,10 +8,34 @@ char *white_space = "        ";
 int label_count = 0;
 
 
+char global_label[32];
+int has_global_label = 0;
+
+void set_label(char *l) {
+    if (has_global_label) {
+        printf("%s:\n", global_label);
+    }
+    strncpy(global_label, l, 31);
+    global_label[31] = '\0';
+    has_global_label = 1;
+}
+
 void print_msg(const char *msg, char *label)
 {
+    if (has_global_label) {
+        printf("%s:", global_label);
+        int len = strlen(global_label) + 1;
+        int target_len = strlen(white_space);
+        int spaces = target_len - len;
+        if (spaces < 1) spaces = 1;
+        for(int i=0; i<spaces; ++i) printf(" ");
+        has_global_label = 0;
+    } else {
+        printf("%s", white_space);
+    }
+
     if (label == NULL)
-        printf("%s %s;\n", white_space, msg);
+        printf("%s;\n", msg);
     else
         printf("%s %s;\n", msg, label);
 }
@@ -180,7 +204,7 @@ void code(Node *ptr)
         print_msg("retf", NULL);
     }
 
-    else if (strcmp(ptr->kind, "IF") == 0)
+    else if (strcmp(ptr->kind, "IF") == 0 || strcmp(ptr->kind, "IFELSE") == 0)
     {
         if (son == NULL)
             return;
@@ -192,7 +216,7 @@ void code(Node *ptr)
             sprintf(label, "l%d", label_count++);
             print_msg("fjp", label);
             code(son->bro);
-            printf("%s:",label);
+            set_label(label);
         }
 
         else if(son->bro != NULL && son->bro->bro != NULL)
@@ -204,9 +228,9 @@ void code(Node *ptr)
             print_msg("fjp", label1);
             code(son->bro);
             print_msg("ujp", label2);
-            printf("%s:", label1);
+            set_label(label1);
             code(son->bro->bro);
-            printf("%s:", label2);
+            set_label(label2);
         }
   
     }

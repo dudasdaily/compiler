@@ -6,7 +6,7 @@ toypl.tab.c toypl.tab.h: toypl.y
 lex.yy.c: toypl.l toypl.tab.h
 	flex toypl.l
 
-toyplParser: lex.yy.c toypl.tab.c toypl.tab.h
+toyplParser: lex.yy.c toypl.tab.c toypl.tab.h codegenerate.c node.c
 	gcc -o toyplParser lex.yy.c toypl.tab.c node.c codegenerate.c -lfl
 
 clean:
